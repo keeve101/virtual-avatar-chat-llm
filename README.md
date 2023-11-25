@@ -121,6 +121,9 @@ However, it also repeated itself frequently and was prone to give inaccurate ans
 - [llama.cpp](https://github.com/ggerganov/llama.cpp)
 - [llama-cpp-python](https://github.com/abetlen/llama-cpp-python/tree/main)
 
+## Example
+![.gif of running `main.py`](./assets/example.gif)
+
 
 
 
