@@ -3,7 +3,7 @@
 
 ## Introduction
 
-A generative AI application to do basic personal introduction. QLoRA fine-tuned Mistral-7B-OpenOrca LLM model.
+A generative AI application to do basic personal introduction. QLoRA finetuned Mistral-7B-OpenOrca LLM model.
 
 ## Model Choice
 I looked at many different LLMs available on HuggingFace's Open LLM Leaderboard, which benchmarks different LLMs based on certain benchmarks, like the TruthfulQA metric.
@@ -14,7 +14,7 @@ As my laptop did not have a GPU, and I had limited free virtual GPU hours using 
 
 This model uses the **Mistral-7B-OpenOrca** model for its benchmark results and availabity of quantized model `.gguf` format.
 
-## Fine-tuning Process
+## Finetuning Process
 
 #### 1. Assembling Data
 The data used comprises of 120 examples of responses to questions about myself, with a range of questions from basic introductory questions to more in-depth questions academia. I answered about 30-40 questions about myself, and then I used OpenAI's ChatGPT 3.5 to create variations of these input-output pairs.
@@ -49,10 +49,10 @@ My name is Keith Low.<|im_end|>
 ```
 The dataset used is `mistral7b-orca-data.jsonl` in `data/dataset`.
 
-#### 3. Fine-tuning
-The model was fine-tuned using the [QLoRA](https://arxiv.org/abs/2305.14314) fine-tuning approach, which is an approach used to train Low-Rank Adaptation (LoRA) weights on quantized LLMs. Which basically comprises of quantizing a HuggingFace version of MistralOrca using [bitsandbytes](https://github.com/TimDettmers/bitsandbytes), using the convenient `SFTTrainer` from [trl](https://huggingface.co/docs/trl/index) along with [peft](https://huggingface.co/docs/peft/index) to load LoRA configuration.
+#### 3. Finetuning
+The model was finetuned using the [QLoRA](https://arxiv.org/abs/2305.14314) finetuning approach, which is an approach used to train Low-Rank Adaptation (LoRA) weights on quantized LLMs. Which basically comprises of quantizing a HuggingFace version of MistralOrca using [bitsandbytes](https://github.com/TimDettmers/bitsandbytes), using the convenient `SFTTrainer` from [trl](https://huggingface.co/docs/trl/index) along with [peft](https://huggingface.co/docs/peft/index) to load LoRA configuration.
 
-The LoRA configuration parameters I used was `r=128, alpha=256`, which I felt had enough coverage of parameters for the fine-tuning through an iterative process. The `r-value` determines the amount parameters exposed for training, meaning only a small percentage of parameters of our quantized model is to be trained, allowing for efficiency and low-cost training.
+The LoRA configuration parameters I used was `r=128, alpha=256`, which I felt had enough coverage of parameters for the finetuning through an iterative process. The `r-value` determines the amount parameters exposed for training, meaning only a small percentage of parameters of our quantized model is to be trained, allowing for efficiency and low-cost training.
 
 The model was trained on a Kaggle notebook using the free tier GPUs, and the code can be found in `finetune/mistral7b-orca-finetune.ipynb.`
 
@@ -75,7 +75,7 @@ Make sure you have CMake, GCC 11 or greater, minimally C++ 17 and Python 3.x.
 3. Run `python main.py`
 
 ## Results
-The fine-tuned model was chosen after a few iterations based on LoRA weights trained on different LoRA configurations and training parameters, and I found the most coherent model answers with a LoRA `r-value=128, alpha=256` trained on `5 epochs` with a learning rate of `2e-5`. 
+The finetuned model was chosen after a few iterations based on LoRA weights trained on different LoRA configurations and training parameters, and I found the most coherent model answers with a LoRA `r-value=128, alpha=256` trained on `5 epochs` with a learning rate of `2e-5`. 
 
 I did not run any formal evaluation and relied only on the `training_loss` and prompting a set of questions to the merged model to see its predictions.
 
